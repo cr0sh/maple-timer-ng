@@ -1,0 +1,1 @@
+docker build . -t builder && docker run -it --rm -m 8g --cpu-count=10 -v ${PWD}:C:\mount builder C:\mount

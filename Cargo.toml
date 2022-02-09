@@ -1,0 +1,28 @@
+[package]
+edition = "2021"
+name = "maple_timer_ng"
+version = "0.3.0"
+
+[dependencies]
+anyhow = "1.0.52"
+assets_manager = { version = "0.7.2", features = ["png"] }
+image = "0.23.14"
+serde = { version = "1.0.133", features = ["derive"] }
+windows = { version = "0.29.0", features = ["alloc", "Win32_UI_WindowsAndMessaging","Win32_Foundation","Win32_Graphics_Gdi", "Win32_UI_HiDpi"] }
+image_match = { path = "image_match" }
+eframe = "0.16.0"
+egui = "0.16.1"
+assets_embedded = { path = "assets_embedded" }
+winscr = { path = "winscr" }
+enum_kind = "0.2.1"
+parking_lot = "0.11.2"
+crossbeam-channel = "0.5.2"
+bus = "2.2.3"
+env_logger = "0.9.0"
+log = "0.4.14"
+
+[features]
+windows_subsystem = []
+
+[workspace]
+members = ["winscr", "image_match", "assets_embedded"]

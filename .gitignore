@@ -1,0 +1,8 @@
+/target
+/*.png
+/*.jpg
+/*.xcf
+/*.exe
+/out
+/example_assets
+/.vscode
