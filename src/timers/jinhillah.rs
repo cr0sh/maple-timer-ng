@@ -19,7 +19,8 @@ pub struct JinhillahTimer {
     hp: MatchAgent<BoundsCachedMatcher<JinHillahHpMatcher>>,
     reap: MatchAgent<BoundsCachedMatcher<JinHillahReapMatcher>>,
     normal_mode: bool,
-    expected_reap: Option<Instant>,
+    capture_time: Option<Instant>,
+    duration_at_capture: Duration,
 }
 
 impl JinhillahTimer {
@@ -45,7 +46,12 @@ impl JinhillahTimer {
                 true,
             ),
             normal_mode,
-            expected_reap: None,
+            capture_time: None,
+            duration_at_capture: if normal_mode {
+                Duration::from_secs(180)
+            } else {
+                Duration::from_secs(150)
+            },
         }
     }
 }
@@ -90,24 +96,24 @@ impl JinhillahTimer {
 
 impl Timer for JinhillahTimer {
     fn duration(&mut self) -> Duration {
-        self.expected_reap
-            .map(|x| x.saturating_duration_since(Instant::now()))
-            .unwrap_or(Duration::ZERO)
+        self.duration_at_capture
     }
 
     fn last_match(&mut self) -> Option<Instant> {
         let ret = self.reap.read_result().and_then(|_| self.reap.last_recv());
-        match (ret, &self.expected_reap) {
+        match (ret, &self.capture_time) {
             (Some(x), None) => {
-                self.expected_reap = Some(x + self.duration_realtime());
+                self.capture_time = Some(x);
+                self.duration_at_capture = self.duration_realtime();
             }
-            (Some(x), Some(y)) if &x >= y => {
-                self.expected_reap = Some(x + self.duration_realtime());
+            (Some(x), Some(y)) if x >= *y + self.duration_at_capture => {
+                self.capture_time = Some(x);
+                self.duration_at_capture = self.duration_realtime();
             }
             _ => (),
         };
 
-        ret
+        self.capture_time
     }
 
     fn text(&self) -> &str {
