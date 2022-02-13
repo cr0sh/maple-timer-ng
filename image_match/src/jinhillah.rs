@@ -202,7 +202,7 @@ impl<V: GenericImageView<Pixel = Bgra<u8>> + std::marker::Sync> Matcher<V>
             .par_iter()
             .enumerate()
             .find_map_any(|(i, (img, good_pixels))| {
-                let mut bad_count_remaining = (*good_pixels as f64 * 0.3) as usize;
+                let mut bad_count_remaining = (*good_pixels as f64 * 0.5) as usize;
                 for (x, y, p) in view.pixels() {
                     let q = img.get_pixel(x, y);
                     if q.good_pixel() && q != &p {
