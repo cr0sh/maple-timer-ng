@@ -48,12 +48,13 @@ impl<V: GenericImageView> GenericImageViewExt for V {
         stride: usize,
     ) -> Self::ViewsLike {
         let my_dim = self.dimensions();
+        let (x_, y_, w, h) = self.bounds();
 
         assert!(my_dim.0 >= dim.0);
         assert!(my_dim.1 >= dim.1);
 
-        (0..=(my_dim.0 - dim.0)).step_by(stride).flat_map(move |x| {
-            (0..=(my_dim.1 - dim.1))
+        (x_..=(x_ + w - dim.0)).step_by(stride).flat_map(move |x| {
+            (y_..=(y_ + h - dim.1))
                 .step_by(stride)
                 .map(move |y| (x, y, dim.0, dim.1)) // x, y, w, h
         })

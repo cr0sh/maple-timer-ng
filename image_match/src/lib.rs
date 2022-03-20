@@ -1,5 +1,6 @@
 #![feature(type_alias_impl_trait, generic_associated_types)]
 
+pub mod buff;
 pub mod jinhillah;
 mod view_ext;
 

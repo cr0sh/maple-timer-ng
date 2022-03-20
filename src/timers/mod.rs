@@ -2,6 +2,7 @@ use std::time::{Duration, Instant};
 
 pub mod jinhillah;
 pub mod match_agent;
+pub mod vskill;
 
 pub trait Timer {
     fn duration(&mut self) -> Duration;

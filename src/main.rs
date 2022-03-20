@@ -23,16 +23,24 @@ use egui::{
 use fonts::RawFont;
 use image::{Bgra, ImageBuffer, Pixel, RgbaImage};
 use image_match::{
+    buff::BuffMatcher,
     jinhillah::{JinHillahHpMatcher, JinHillahReapMatcher},
     Matcher,
 };
 use log::trace;
 use screen_dimension::ScreenDimension;
-use timers::{jinhillah::JinhillahTimer, match_agent::MatchAgent, Timer};
+use timers::{
+    jinhillah::JinhillahTimer,
+    match_agent::MatchAgent,
+    vskill::{VSkillKind, VSkillTimer},
+    Timer,
+};
 
 struct MatchOptions {
     jinhillah: bool,
     jinhillah_hard: bool,
+    vskill: bool,
+    vskill_kind: VSkillKind,
 }
 
 impl Default for MatchOptions {
@@ -40,6 +48,8 @@ impl Default for MatchOptions {
         Self {
             jinhillah: false,
             jinhillah_hard: true,
+            vskill: false,
+            vskill_kind: VSkillKind::FatalStrike,
         }
     }
 }
@@ -321,7 +331,8 @@ impl MyEguiApp {
             |ui| {
                 ui.horizontal_wrapped(|ui| {
                     ui.heading("옵션");
-                    let something = self.match_options.jinhillah;
+                    // TODO: Refactor this into method
+                    let something = self.match_options.jinhillah || self.match_options.vskill;
                     ui.add_enabled_ui(something, |ui| {
                         ui.vertical(|ui| {
                             ui.add_space(14.0);
@@ -357,6 +368,17 @@ impl MyEguiApp {
                 ui.selectable_value(&mut self.match_options.jinhillah_hard, false, "노말");
                 ui.selectable_value(&mut self.match_options.jinhillah_hard, true, "하드");
             });
+            ui.horizontal_wrapped(|ui| {
+                ui.checkbox(
+                    &mut self.match_options.vskill,
+                    "5차 스킬코어 타이머 사용하기",
+                );
+                ui.selectable_value(
+                    &mut self.match_options.vskill_kind,
+                    VSkillKind::FatalStrike,
+                    "일격필살",
+                );
+            });
         });
     }
 
@@ -368,6 +390,15 @@ impl MyEguiApp {
                 self.capturer.as_mut().unwrap().as_mut().unwrap().dims(),
                 !self.match_options.jinhillah_hard,
             )));
+        }
+
+        if self.match_options.vskill {
+            self.timers.push(Box::new(VSkillTimer::new(
+                Arc::clone(self.capturer.as_mut().unwrap().as_mut().unwrap().cond()),
+                Arc::clone(self.capturer.as_mut().unwrap().as_mut().unwrap().lock_ref()),
+                self.match_options.vskill_kind,
+                self.capturer.as_mut().unwrap().as_mut().unwrap().dims(),
+            )))
         }
     }
 }
@@ -403,6 +434,7 @@ fn main() {
 
     <JinHillahHpMatcher as Matcher<ImageBuffer<Bgra<u8>, Vec<u8>>>>::init();
     <JinHillahReapMatcher as Matcher<ImageBuffer<Bgra<u8>, Vec<u8>>>>::init();
+    <BuffMatcher as Matcher<ImageBuffer<Bgra<u8>, Vec<u8>>>>::init();
 
     let app = MyEguiApp::default();
     assets_embedded::assets();
