@@ -21,7 +21,7 @@ RUN `
 
 RUN `
     powershell -Command "(Invoke-WebRequest -OutFile rustup-init.exe https://win.rustup.rs/x86_64) `
-    ; (./rustup-init.exe --default-toolchain nightly-2022-01-06 -y --profile minimal) `
+    ; (./rustup-init.exe --default-toolchain nightly-2022-03-18 -y --profile minimal) `
     ; rm ./rustup-init.exe"
 
 RUN mkdir C:\\mount
