@@ -8,6 +8,7 @@ mod screen_dimension;
 mod stready_redraw;
 mod timers;
 
+use sha2::Digest;
 use std::{
     cell::Cell,
     sync::{atomic::AtomicU64, Arc},
@@ -424,10 +425,35 @@ fn error_icon(ui: &mut Ui, hover_message: impl Into<String>) {
 }
 
 fn main() {
+    const SENTRY_ID_SALT: &str = "__SENTRY_ID_SORT_FOOBARBAZQUX!!!!@@@@####$$$$__";
+
     if std::env::var("RUST_BACKTRACE").is_err() {
         std::env::set_var("RUST_BACKTRACE", "1");
     }
-    env_logger::init();
+
+    let logger =
+        sentry::integrations::log::SentryLogger::with_dest(env_logger::Logger::from_default_env());
+    log::set_boxed_logger(Box::new(logger)).unwrap();
+    log::set_max_level(log::LevelFilter::Info);
+
+    let host_id = hostname::get().ok().and_then(|s| {
+        s.to_str().map(|s| {
+            let mut hasher = sha2::Sha256::new();
+            hasher.update(SENTRY_ID_SALT);
+            hasher.update(s);
+            format!("hashed-id-{:x}", hasher.finalize()).into()
+        })
+    });
+
+    let _guard = sentry::init((
+        "https://640057a54e8043aaaf16f730d85f4015@o369096.ingest.sentry.io/5588038",
+        sentry::ClientOptions {
+            release: Some(option_env!("CARGO_PKG_VERSION").unwrap_or("unknown").into()),
+            server_name: host_id,
+            ..Default::default()
+        },
+    ));
+
     let hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |e| {
         let stderr = std::io::stderr();
