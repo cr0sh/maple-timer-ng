@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "maple_timer_ng"
+name = "maple_timer"
 version = "0.3.0"
 
 [dependencies]
