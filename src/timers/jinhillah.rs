@@ -77,9 +77,9 @@ impl JinhillahTimer {
             HARD_DURATIONS
         };
 
-        if total_hp_ratio < 0.3 {
+        if total_hp_ratio < 0.31 {
             durations[2]
-        } else if total_hp_ratio < 0.6 {
+        } else if total_hp_ratio < 0.61 {
             durations[1]
         } else {
             durations[0]
