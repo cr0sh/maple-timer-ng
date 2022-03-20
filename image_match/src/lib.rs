@@ -53,11 +53,8 @@ impl<
 {
     type MatchResult = T::MatchResult;
 
-    type CandidatesIter<'a>
-    where
-        <V as GenericImageView>::InnerImageView: 'a,
-        V: 'a,
-    = std::vec::IntoIter<SubImage<&'a V::InnerImageView>>;
+    type CandidatesIter<'a> = std::vec::IntoIter<SubImage<&'a V::InnerImageView>>
+        where <V as GenericImageView>::InnerImageView: 'a, V: 'a;
 
     fn view_dimensions(&self) -> (u32, u32) {
         self.0.view_dimensions()

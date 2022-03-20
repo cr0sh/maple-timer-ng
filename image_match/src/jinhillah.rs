@@ -55,10 +55,7 @@ const MAX_PIXELS: u32 = HP_X_OFFSET.end - HP_X_OFFSET.start + 1;
 
 impl<V: GenericImageView<Pixel = Bgra<u8>>> Matcher<V> for JinHillahHpMatcher {
     type MatchResult = JinHillahHpMatchResult;
-    type CandidatesIter<'a>
-    where
-        V: 'a,
-    = impl Iterator<Item = SubImage<&'a V::InnerImageView>> + 'a;
+    type CandidatesIter<'a> = impl Iterator<Item = SubImage<&'a V::InnerImageView>> + 'a where V: 'a;
 
     fn init() {
         let asset = assets();
@@ -140,10 +137,7 @@ impl<V: GenericImageView<Pixel = Bgra<u8>> + std::marker::Sync> Matcher<V>
 {
     type MatchResult = usize;
 
-    type CandidatesIter<'a>
-    where
-        V: 'a,
-    = impl Iterator<Item = SubImage<&'a V::InnerImageView>> + 'a;
+    type CandidatesIter<'a> = impl Iterator<Item = SubImage<&'a V::InnerImageView>> + 'a where V: 'a;
 
     fn init() {
         JIN_HILLAH_REAP_MOTIONS.get_or_init(|| {
