@@ -424,6 +424,9 @@ fn error_icon(ui: &mut Ui, hover_message: impl Into<String>) {
 }
 
 fn main() {
+    if std::env::var("RUST_BACKTRACE").is_err() {
+        std::env::set_var("RUST_BACKTRACE", "1");
+    }
     env_logger::init();
     let hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |e| {
