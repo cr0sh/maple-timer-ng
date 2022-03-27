@@ -52,6 +52,10 @@ SPDX-License-Identifier: MIT
 
 ## Features
 
- - 진 힐라의 *영혼 베기* 패턴 시간 측정
-   - 체력 바를 인식하여 주기를 자동으로 계산합니다.
- - 일격필살 코어 시간 측정
+- 진 힐라의 *영혼 베기* 패턴 시간 측정
+  - 체력 바를 인식하여 주기를 자동으로 계산합니다.
+- 일격필살 코어 시간 측정
+
+## Credits
+
+- Part of `winscr` module comes from [screenshot-rs](https://github.com/robmikh/screenshot-rs).
