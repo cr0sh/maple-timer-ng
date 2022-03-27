@@ -18,8 +18,8 @@ use std::{
 use capturer::Capturer;
 use eframe::{egui, epi};
 use egui::{
-    style::Spacing, Color32, FontData, FontDefinitions, FontFamily, Rgba, RichText, TextStyle,
-    TextureId, Ui, Vec2,
+    style::Spacing, Color32, FontData, FontDefinitions, FontFamily, Hyperlink, Rgba, RichText,
+    TextStyle, TextureId, Ui, Vec2,
 };
 use fonts::RawFont;
 use image::{Bgra, ImageBuffer, Pixel, RgbaImage};
@@ -72,7 +72,7 @@ struct MyEguiApp {
 
 impl epi::App for MyEguiApp {
     fn name(&self) -> &str {
-        concat!("메이플스토리 타이머 ver. ", env!("CARGO_PKG_VERSION"))
+        concat!("메이플스토리 타이머")
     }
 
     fn setup(
@@ -224,7 +224,19 @@ impl MyEguiApp {
     }
 
     fn settings_ui(&mut self, _ctx: &egui::CtxRef, frame: &epi::Frame, ui: &mut Ui) {
-        ui.heading("메이플스토리 타이머");
+        ui.heading(format!(
+            "메이플스토리 타이머 v{}",
+            env!("CARGO_PKG_VERSION")
+        ));
+        ui.horizontal(|ui| {
+            ui.style_mut().spacing.item_spacing = Vec2::new(0.0, 0.0);
+            ui.small("업데이트 확인: ");
+            ui.add(Hyperlink::from_label_and_url(
+                RichText::new("https://mapletimer.cro.sh").small(),
+                "https://mapletimer.cro.sh",
+            ))
+            .hovered()
+        });
         let capturer = match self.capturer.as_ref() {
             Some(Ok(capturer)) => capturer,
             Some(Err(..)) => {
