@@ -1,1 +1,1 @@
-docker build . -t builder && docker run -it --rm -m 8g --cpu-count=10 -v ${PWD}:C:\mount builder C:\mount
+docker build . -t builder && docker run -it --rm -m 8g --cpu-count=10 -e RUST_BACKTRACE=full -v ${PWD}:C:\mount builder C:\mount
