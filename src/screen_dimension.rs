@@ -7,8 +7,8 @@ use enum_kind::Kind;
 pub enum ScreenDimension {
     #[kind(to_str = "stringify!(1280x720)", width = "1280", height = "720")]
     X1280Y720,
-    #[kind(to_str = "stringify!(1366x768)", width = "1366", height = "768")]
-    X1366Y768,
+    // #[kind(to_str = "stringify!(1366x768)", width = "1366", height = "768")] // FIXME: buggy
+    // X1366Y768,
 }
 
 impl Default for ScreenDimension {
