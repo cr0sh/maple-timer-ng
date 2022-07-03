@@ -376,10 +376,18 @@ impl MyEguiApp {
                     ScreenDimension::X1366Y768.to_str(),
                 );
             });
+            // XXX: JinhillahTimer on 1366x768 is buggy
             ui.horizontal_wrapped(|ui| {
                 ui.checkbox(&mut self.match_options.jinhillah, "진힐라 타이머 사용하기");
                 ui.selectable_value(&mut self.match_options.jinhillah_hard, false, "노말");
                 ui.selectable_value(&mut self.match_options.jinhillah_hard, true, "하드");
+                if self.dimension == ScreenDimension::X1366Y768 {
+                    warn_icon(
+                        ui,
+                        "1366x768 해상도에서 진 힐라 타이머는 상당히 부정확합니다. \
+                    사용에 주의해주세요.",
+                    )
+                }
             });
             ui.horizontal_wrapped(|ui| {
                 ui.checkbox(
