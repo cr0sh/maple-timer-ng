@@ -142,7 +142,7 @@ impl epi::App for MyEguiApp {
 
         ctx.set_fonts(font_def);
 
-        let mut style = (&*ctx.style()).clone();
+        let mut style = (*ctx.style()).clone();
         style.spacing = Spacing {
             item_spacing: Vec2::new(12.0, 12.0),
             ..Default::default()
