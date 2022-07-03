@@ -370,11 +370,11 @@ impl MyEguiApp {
                     ScreenDimension::X1280Y720,
                     ScreenDimension::X1280Y720.to_str(),
                 );
-                // ui.selectable_value(
-                //     &mut self.dimension,
-                //     ScreenDimension::X1366Y768,
-                //     ScreenDimension::X1366Y768.to_str(),
-                // );
+                ui.selectable_value(
+                    &mut self.dimension,
+                    ScreenDimension::X1366Y768,
+                    ScreenDimension::X1366Y768.to_str(),
+                );
             });
             ui.horizontal_wrapped(|ui| {
                 ui.checkbox(&mut self.match_options.jinhillah, "진힐라 타이머 사용하기");
