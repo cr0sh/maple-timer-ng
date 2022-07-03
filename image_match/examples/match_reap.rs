@@ -35,7 +35,7 @@ fn main() {
                     return ControlFlow::Break(());
                 };
 
-                return ControlFlow::Continue(());
+                ControlFlow::Continue(())
             });
     }
 }
