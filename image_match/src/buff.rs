@@ -132,9 +132,9 @@ impl<V: GenericImageView<Pixel = Bgra<u8>>> Matcher<V> for BuffMatcher {
         .chain(
             view.view(
                 (view.width() - 3) % 32,
-                81,
+                118,
                 view.width() - ((view.width() - 3) % 32),
-                (view.height() - 81).min(400),
+                (view.height() - 118).min(400),
             )
             .view_bounds_like((32, 32), 32)
             .map(|(x, y, w, h)| view.view(x, y, w, h)),
